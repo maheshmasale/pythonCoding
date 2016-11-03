@@ -1,0 +1,53 @@
+#https://www.hackerrank.com/challenges/triangle-quest-2
+#Difficult to solve!!
+inp = '5'
+for i in range(1,int(inp)+1):
+    print(((10**i)//9)**2)
+
+'''
+OUTPUT: -
+1
+121
+12321
+1234321
+123454321
+'''
+
+#https://www.hackerrank.com/challenges/python-mod-divmod
+firstInt = int(input().strip())
+secondInt = int(input().strip())
+print(divmod(firstInt,secondInt)[0])
+print(divmod(firstInt,secondInt)[1])
+print(divmod(firstInt,secondInt))
+
+
+#https://www.hackerrank.com/challenges/python-power-mod-power?h_r=next-challenge&h_v=zen
+firstInt = int(input().strip())
+secondInt = int(input().strip())
+modInt = int(input().strip())
+print(pow(firstInt,secondInt))
+print(pow(firstInt,secondInt,modInt))
+
+
+#https://www.hackerrank.com/challenges/python-integers-come-in-all-sizes
+# Enter your code here. Read input from STDIN. Print output to STDOUT
+firstInt = int(input())
+secondInt = int(input())
+thirdInt = int(input())
+forthInt = int(input())
+
+print(pow(firstInt,secondInt)+ pow(thirdInt,forthInt))
+
+
+#https://www.hackerrank.com/challenges/python-quest-1
+input = 5
+for i in range(1,input()):
+    print (10**i-1)/9*i
+
+'''
+OUTPUT: -
+1
+22
+333
+4444
+'''
