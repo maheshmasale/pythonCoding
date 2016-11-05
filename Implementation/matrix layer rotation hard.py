@@ -39,6 +39,10 @@ else:
 
 '''
 
+def getDataPointFromMatrix(arr,rowStart,rowEnd,colStart,colEnd):
+    return arr[]
+
+
 m,n,r = 3,4,55
 a = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]
 #a = [['a','b'],['c','d'],['e','f'],['g','h']]
@@ -49,7 +53,10 @@ for l in range(layer):
     if lengthArr != 0:
         r_ = r % lengthArr
         arr = []
-        getDataPointFromMatrix(a,)
+        arr.extend(getDataPointFromMatrix(a,l,-1,l,n-l))
+        arr.extend(getDataPointFromMatrix(a, l, -1, l, n - l))
+        arr.extend(getDataPointFromMatrix(a, l, -1, l, n - l))
+        arr.extend(getDataPointFromMatrix(a, l, -1, l, n - l))
     else:
         #single dim array
         print(" ")
