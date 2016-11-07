@@ -20,18 +20,21 @@ class stack():
     def peek(self):
         return self.arr[self.size() -1]
 
-s = "{{[[(())]]}}"
+l_dict = {")":"(","]":"[","}":"{"}
+
+s = "{[()]}"
 def bracketMatching(str):
     s = stack()
     for i in str:
-        if s.size() ==0:
+        if s.size() == 0:
             s.push(i)
+            #print(i, s.peek())
         else:
-            if s.peek() == i:
+            #print(i, s.arr,s.peek())
+            if i in l_dict and s.peek() == l_dict[i]:
                 s.pop()
             else:
                 s.push(i)
-
     return s.size() == 0
 
 if bracketMatching(s):
