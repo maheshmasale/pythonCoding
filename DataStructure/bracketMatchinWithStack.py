@@ -22,7 +22,7 @@ class stack():
 
 l_dict = {")":"(","]":"[","}":"{"}
 
-s = "{[()]}"
+s = "]"
 def bracketMatching(str):
     s = stack()
     for i in str:
@@ -31,7 +31,7 @@ def bracketMatching(str):
             #print(i, s.peek())
         else:
             #print(i, s.arr,s.peek())
-            if i in l_dict and s.peek() == l_dict[i]:
+            if i in l_dict.keys() and s.peek() == l_dict[i]:
                 s.pop()
             else:
                 s.push(i)
