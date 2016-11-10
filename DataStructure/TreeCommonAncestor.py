@@ -41,19 +41,33 @@ def printTree(t,str):
 t = createBSTFromArray(a,0,len(a)-1)
 printTree(t,"")
 
+
 def findCommonAncestor(nodeA, nodeB):
-    #find path of nodeA and put it stackA
+    '''
+    find path of nodeA and put it stackA
+    find path of nodeB and put it stackB
+    pop from StackA and StackB and compare
+    '''
+
+    if not nodeA or not nodeB:
+        return None
     stackA = []
+    stackA.append(nodeA)
     while(nodeA.parent):
         stackA.append(nodeA.parent)
         nodeA = nodeA.parent
-    #find path of nodeB and put it stackB
+
     stackB = []
+    stackB.append(nodeB)
     while(nodeB.parent):
         stackB.append(nodeB.parent)
         nodeB = nodeB.parent
 
-    #pop from StackA and StackB and compare
+
+    if stackA[-1] != stackB[-1]:
+        #different tree !
+        return None
+
     while len(stackA) > 0 and len(stackB) > 0:
         topElem = stackA[-1]
         if stackA.pop() != stackB.pop():
