@@ -30,14 +30,12 @@ class Node():
 
 def createGraph():
     g = Graph()
-
     x = Node("x")
     y = Node("y")
     a = Node("a")
     b = Node("b")
     c = Node("c")
     d = Node("d")
-
     x.addAdjacents(y)
     x.addAdjacents(a)
     a.addAdjacents(y)
@@ -45,23 +43,20 @@ def createGraph():
     c.addAdjacents(d)
     d.addAdjacents(x)
     y.addAdjacents(a)
-
     g.addVertices(x)
     g.addVertices(y)
     g.addVertices(a)
     g.addVertices(b)
     g.addVertices(c)
     g.addVertices(d)
-
     return g
+
 
 def breadthFirstSearch(g, start,end):
     if start == end:
         return True
-
     que = []
     que.append(start)
-
     while len(que) > 0:
         t = que[0]
         t.visited = True

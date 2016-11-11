@@ -1,3 +1,6 @@
+from collections import deque
+from itertools import permutations
+
 class Node():
     def __init__(self,val):
         if val == Node:
@@ -38,5 +41,31 @@ def printTree(t,str):
         printTree(t.right,str)
 
 
+def getSize(t, counter):
+    if t == None:
+        return counter
+    else:
+        counter = counter + 1
+        counter = getSize(t.left, counter)
+        counter = getSize(t.right, counter)
+    return counter
+
 t = createBSTFromArray(a,0,len(a)-1)
 printTree(t,"")
+print(getSize(t,0))
+
+
+def findAllTopologySequences(rootNode):
+    que = deque()
+    que.append(rootNode)
+    arrSeque = []
+    while len(que) > 0:
+        tempArr = []
+        for i in range(len(que)):
+            a = que.pop()
+            tempArr.append(a.left)
+            tempArr.append(a.right)
+            
+            if len(arrSeque) == 0:
+                arrSeque.append(a.val)
+            else:
