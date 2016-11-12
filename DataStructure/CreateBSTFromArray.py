@@ -65,7 +65,26 @@ def findAllTopologySequences(rootNode):
             a = que.pop()
             tempArr.append(a.left)
             tempArr.append(a.right)
-            
-            if len(arrSeque) == 0:
-                arrSeque.append(a.val)
-            else:
+
+
+        if len(arrSeque) == 0:
+            arrSeque.append(a.val)
+        else:
+            arrSeque.append()
+
+
+def weave(lArr, rArr, prefix):
+    if len(lArr) == 0:
+        print(prefix + "".join(rArr))
+    elif len(rArr) == 0:
+        print(prefix + "".join(lArr))
+    else:
+        if len(lArr) != 0:
+            t = lArr[0]
+            lArr = lArr[1:]
+            weave(lArr,rArr, prefix+str(t))
+        if len(rArr) != 0:
+            t = rArr[0]
+            rArr = rArr[1:]
+            weave(lArr,rArr, prefix+str(t))
+    return
