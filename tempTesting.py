@@ -1,34 +1,22 @@
+
 def weave(lArr,rArr, prefix,permuArr = []):
     #use recursion to find the permutations of given sequence by keeping the sequence intact.
-    if len(lArr) ==0 and len(rArr) == 0:
-        permuArr.append(prefix)
-        return permuArr
-    if len(lArr) == 0:
-        tempPrefix = []
-        tempPrefix.extend(prefix)
+    tempPrefix = []
+    tempPrefix.extend(prefix)
+    if len(lArr) ==0 or len(rArr) == 0:
+        tempPrefix.extend(lArr)
         tempPrefix.extend(rArr)
         permuArr.append(tempPrefix)
         return permuArr
-    if len(rArr) == 0:
-        tempPrefix = []
-        tempPrefix.extend(prefix)
-        tempPrefix.extend(lArr)
-        permuArr.append(tempPrefix)
-        return permuArr
-
-    lArrTemp = lArr[1:]
-    rArrTemp = rArr[1:]
-
-    tempPrefix = []
-    tempPrefix.extend(prefix)
 
     tempPrefix.append(lArr[0])
-    weave(lArrTemp,rArr,tempPrefix,permuArr)
+    weave(lArr[1:],rArr,tempPrefix,permuArr)
     tempPrefix.pop()
     tempPrefix.append(rArr[0])
-    weave(lArr,rArrTemp, tempPrefix ,permuArr)
+    weave(lArr,rArr[1:], tempPrefix ,permuArr)
     tempPrefix.pop()
     return permuArr
 
-permutationsArr = weave(["a","b","c"],["d","e","f"],"",[])
+#permutationsArr = weave(["a","b","c"],["d","e","f"],"",[])
+permutationsArr = weave(["a","b"],["d","e"],"",[])
 print(permutationsArr)
