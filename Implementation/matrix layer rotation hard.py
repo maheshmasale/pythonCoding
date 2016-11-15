@@ -39,8 +39,7 @@ else:
 
 '''
 
-def getDataPointFromMatrix(arr,rowStart,rowEnd,colStart,colEnd):
-    return arr[]
+
 
 
 m,n,r = 3,4,55

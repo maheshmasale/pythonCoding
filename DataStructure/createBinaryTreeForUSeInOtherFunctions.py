@@ -11,7 +11,7 @@ class Node():
         self.parent = None
 
 
-a = [21,55,64,78,99,108,2828]
+a = [21,21,21,55,64,78,99,108,2828]
 
 def createBSTFromArray(a,start,end):
     if start > end:
@@ -83,4 +83,40 @@ def validateSubTree(t1,t2):
 
 
 
-print(checkSubTree(t1,t2))
+#print(checkSubTree(t1,t2))
+
+
+
+
+# To count paths with given sum:
+def increaseDic(dict, key, delta):
+    if not key in dict:
+        dict[key] = 0
+    dict[key] += delta
+
+
+def countPaths(node, targetVal):
+    if node == None:
+        return 0
+    pathCountDic = {}
+    pathCountDic[0] = 1
+    return countPathsInSubTree(node, targetVal, 0, pathCountDic)
+
+
+def countPathsInSubTree(node, targetVal, runningSum, pathCountDic):
+    if node == None:
+        return 0
+    runningSum += node.value
+    increaseDic(pathCountDic, runningSum, 1)
+    countToCount = runningSum - targetVal
+    totalPaths = 0
+    if countToCount in pathCountDic:
+        totalPaths = pathCountDic[countToCount]
+
+    totalPaths += countPathsInSubTree(node.left, targetVal, runningSum, pathCountDic)
+    totalPaths += countPathsInSubTree(node.right, targetVal, runningSum, pathCountDic)
+    increaseDic(pathCountDic, runningSum, -1)
+    return totalPaths
+
+print(printTree(t))
+print(countPaths(t,42))
