@@ -1,9 +1,7 @@
 def flipBit(num):
     binStr = bin(num)[2:]
-    
     maxLen, preCnt, cnt = 0,0,0
     for i in range(len(binStr)):
-
         if int(binStr[i]) == 1:
             cnt += 1
         elif i > 0 and int(binStr[i-1]) == 0:
