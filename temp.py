@@ -144,7 +144,7 @@ def getLongestSequenceAfterReplacement(str,k):
             dictCharTemp["indexStack"] = [i]
             dictCharTemp["countChars"] = [1]
             dictChar[str[i]] = dictCharTemp
-    print(dictChar)
+    #print(dictChar)
     for key in dictChar.keys():
         indexStack = dictChar[key]["indexStack"]
         countStack = dictChar[key]["countChars"]
@@ -164,4 +164,19 @@ def getLongestSequenceAfterReplacement(str,k):
                 maxLength = sequenceLength + k - charsToBeReplaced
 
     return maxLength
-print(getLongestSequenceAfterReplacement(str,3))
+#print(getLongestSequenceAfterReplacement(str,3))
+
+
+def testRandom():
+    import random
+    outcomes = { 'heads':0,
+             'tails':0,
+             }
+    sides = list(outcomes.keys())
+    for i in range(1000):
+        outcomes[random.choice(sides)] += 1
+
+    print('Heads:', outcomes['heads'])
+    print('Tails:', outcomes['tails'])
+
+#testRandom()
