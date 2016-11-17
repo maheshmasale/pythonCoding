@@ -1,3 +1,6 @@
+from numpy.distutils.system_info import gdk_info
+
+
 def combinationSum3( k, n):
     """
     :type k: int
@@ -180,3 +183,42 @@ def testRandom():
     print('Tails:', outcomes['tails'])
 
 #testRandom()
+
+def generateGenderRatio(num):
+    #ctci question 6.7
+    girls = 0
+    boys = 0
+
+    for i in range(num):
+        children = getChild()
+        girls += children[0]
+        boys += children[1]
+
+    return girls/(girls+boys)
+
+
+
+def getChild():
+    girls = 0
+    boys = 0
+
+    import random
+
+    while girls == 0:
+        r = random.randint(0,1)
+        if r:
+            boys += 1
+        else:
+            girls += 1
+    return [girls ,boys]
+
+#print(generateGenderRatio(5))
+
+
+def getUniqueNumer(nums):
+    from operator import xor
+    from functools import reduce
+    return reduce(xor,nums)
+
+
+print(getUniqueNumer([5,4,5,8,4]))
