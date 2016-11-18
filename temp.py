@@ -130,23 +130,23 @@ arrA = [1,2,3]
 
 
 
-str = "ABAB"
+str1 = "ABAB"
 #str = "AABABBCACCC"
-def getLongestSequenceAfterReplacement(str,k):
+def getLongestSequenceAfterReplacement(str1,k):
     maxLength = 0
     dictChar = {}
-    for i in range(len(str)):
-        if str[i] in dictChar.keys():
-            if str[i] == str[i-1]:
-               dictChar[str[i]]["countChars"][-1] += 1
+    for i in range(len(str1)):
+        if str1[i] in dictChar.keys():
+            if str1[i] == str1[i-1]:
+               dictChar[str1[i]]["countChars"][-1] += 1
             else:
-                dictChar[str[i]]["indexStack"].append(i)
-                dictChar[str[i]]["countChars"].append(1)
+                dictChar[str1[i]]["indexStack"].append(i)
+                dictChar[str1[i]]["countChars"].append(1)
         else:
             dictCharTemp = {}
             dictCharTemp["indexStack"] = [i]
             dictCharTemp["countChars"] = [1]
-            dictChar[str[i]] = dictCharTemp
+            dictChar[str1[i]] = dictCharTemp
     #print(dictChar)
     for key in dictChar.keys():
         indexStack = dictChar[key]["indexStack"]
@@ -167,7 +167,7 @@ def getLongestSequenceAfterReplacement(str,k):
                 maxLength = sequenceLength + k - charsToBeReplaced
 
     return maxLength
-#print(getLongestSequenceAfterReplacement(str,3))
+#print(getLongestSequenceAfterReplacement(str1,3))
 
 
 def testRandom():
@@ -221,4 +221,25 @@ def getUniqueNumer(nums):
     return reduce(xor,nums)
 
 
-print(getUniqueNumer([5,4,5,8,4]))
+#print(getUniqueNumer([5,4,5,8,4]))
+
+
+
+def getSum(a, b):
+    import math
+    return int(math.log((2 ** a) * (2 ** b), 2))
+
+#print(getSum(2147483647, -2147483648))
+
+
+
+def addDigits(num):
+    from functools import reduce
+    numStr = str(num)
+    f = lambda a, b: int(a) + int(b)
+    while len(numStr) > 1:
+        sumOfElem = reduce(f, numStr)
+        numStr = str(sumOfElem)
+    return int(numStr[0])
+
+print(addDigits(128))
