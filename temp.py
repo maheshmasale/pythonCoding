@@ -242,4 +242,43 @@ def addDigits(num):
         numStr = str(sumOfElem)
     return int(numStr[0])
 
-print(addDigits(128))
+#print(addDigits(128))
+
+
+def findTheDifference_bruteForce(s, t):
+    sArr = [i for i in s]
+    tArr = [i for i in t]
+    for i in sArr:
+        ind = tArr.index(i)
+        del tArr[ind]
+    return tArr[0]
+
+
+def findTheDifference_dictionary(s, t):
+    dictChars = {}
+    for j in range(len(t)):
+        if j < len(s):
+            dictChars = increaseDicElem(dictChars,s[j])
+        dictChars = decreaseDicElem(dictChars, t[j])
+
+    return [arr[0] for arr in dictChars.items() if arr[1] < 0][0]
+    #return t
+
+def increaseDicElem(dict,elem):
+    if not elem in dict:
+       dict[elem] = 0
+    dict[elem] += 1
+    return dict
+
+def decreaseDicElem(dict,elem):
+    if not elem in dict:
+       dict[elem] = 0
+    dict[elem] -= 1
+    return dict
+
+def findTheDifference_elegantSolution(s,t):
+    from functools import reduce
+    from operator import xor
+    return chr(reduce(xor,map(ord,s+t)))
+
+print(findTheDifference_dictionary("abcd","eabcd"))
