@@ -281,4 +281,26 @@ def findTheDifference_elegantSolution(s,t):
     from operator import xor
     return chr(reduce(xor,map(ord,s+t)))
 
-print(findTheDifference_dictionary("abcd","eabcd"))
+#print(findTheDifference_dictionary("abcd","eabcd"))
+
+#Code to get excel column number from given column name
+def titleToNumber(s):
+    from functools import reduce
+    return reduce(lambda i, j: i + j, map(lambda arr: arr[1] * 26 ** arr[0], [[i, j] for i, j in enumerate(
+        map(lambda x: ord(x) - 64, [s[i] for i in range(len(s) - 1, -1, -1)]))]))
+
+
+def firstUniqChar(s):
+    from functools import reduce
+    dictChars = {}
+    for i in range(len(s)):
+        if s[i] not in dictChars:
+            dictChars[s[i]] = {"iStart": i, "count": 0}
+        dictChars[s[i]]["count"] += 1
+    ftr = filter(lambda x: dictChars[x[0]]["count"] == 1, dictChars.items())
+    iStart = (reduce(lambda x, y: x if x[1]["iStart"]<y[1]["iStart"] else y ,ftr))
+    if iStart == None:
+        return -1
+    return iStart
+
+print(firstUniqChar("leetl"))
