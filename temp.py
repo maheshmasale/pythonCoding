@@ -303,4 +303,41 @@ def firstUniqChar(s):
         return -1
     return iStart
 
-print(firstUniqChar("leetl"))
+#print(firstUniqChar("leetl"))
+
+def isAnagram(s,t):
+    from functools import reduce
+    if not s and not t:
+        return True
+
+    if (not s and t) or (s and not t):
+        return False
+
+    sum_S = reduce(lambda x, y: x + y, [ord(i) for i in s])
+    mul_S = reduce(lambda x, y: x * y, [ord(i) for i in s])
+    sum_T = reduce(lambda x, y: x + y, [ord(i) for i in t])
+    mul_T = reduce(lambda x, y: x * y, [ord(i) for i in t])
+    print(sum_S,sum_T,mul_S,mul_T)
+    return sum_S == sum_T and mul_S == mul_T
+
+#print(isAnagram('ba','ab'))
+
+
+def longestPalindrome(s):
+    """
+    :type s: str
+    :rtype: int
+    """
+    from collections import Counter
+    cntr = Counter(s)
+    pallindromeLength = 0
+    for i in cntr.items():
+        if not i[1] % 2:
+            pallindromeLength += i[1]
+        else:
+            pallindromeLength += i[1] - i[1]%2
+    if pallindromeLength < len(s):
+        pallindromeLength += 1
+    return pallindromeLength
+
+print(longestPalindrome("abccccdd"))
