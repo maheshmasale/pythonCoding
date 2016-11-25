@@ -103,4 +103,36 @@ def repeatedSubstringPattern(str1):
                 return True
     return False
 
-print(repeatedSubstringPattern("abab"))
+#print(repeatedSubstringPattern("abab"))
+
+count = 0
+def countSteps(n):
+    global count
+    countRecurse(n)
+    return count
+
+
+def countRecurse(n):
+    global count
+    if n == 0:
+        count+=1
+    if n-1 >= 0:
+        countRecurse(n-1)
+    if n-2 >= 0:
+        countRecurse(n-2)
+    if n-3 >= 0:
+        countRecurse(n-3)
+
+
+def countSteps_iter(n):
+    if n < 3:
+        return n
+    a,b,c = 1,2,4
+
+    for i in range(4, n+1):
+        a, b, c = b, c, a+b+c
+    return c
+
+
+print(countSteps(5))
+print(countSteps_iter(5))

@@ -1,17 +1,26 @@
-def permu(str,l,r):
+def permutations(str1):
+    arrStr = [i for i in str1]
+    tempArr = []
+    permu(arrStr,0,len(arrStr)-1,tempArr)
+    return tempArr
+
+def permu(arrStr,l,r,tempArr):
     if l == r:
-        print(str)
+        tempArr.append("".join(arrStr))
     else:
         for i in range(l,r+1):
-            str = swap(str,l,i)
-            permu(str,l+1,r)
-            str = swap(str, l, i) #reverting changes
+            swap(arrStr,l,i)
+            permu(arrStr,l+1,r,tempArr)
+            swap(arrStr, l, i) #reverting changes
 
-def swap(str,l,i):
+def swap(arrStr,l,i):
     if l == i:
-        return str
-    str = str[:l] + str[i] + str[l+1:i]+str[l]+ str[i+1:]
-    return str
+        return arrStr
+    arrStr[l],arrStr[i] = arrStr[i],arrStr[l]
+    return arrStr
 
-str="ABcD"
-permu(str,0,len(str)-1)
+str1 ="ABcD"
+arr1 =permutations(str1)
+print(len(arr1))
+print(len(set(arr1)))
+
