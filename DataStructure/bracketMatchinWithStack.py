@@ -1,3 +1,8 @@
+
+
+from DataStructure.BFS_Graph import Graph
+gr = Graph()
+
 class stack():
     def __init__(self):
         self.arr = []
