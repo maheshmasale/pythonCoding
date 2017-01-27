@@ -22,4 +22,3 @@ def tweetStrLen(arr,k):
     return count
 #print(tweetStrLen([1, 2, 3], 4))
 print(tweetStrLen([3,1,2,1],4))
-

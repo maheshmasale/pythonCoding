@@ -340,4 +340,5 @@ def longestPalindrome(s):
         pallindromeLength += 1
     return pallindromeLength
 
-print(longestPalindrome("abccccdd"))
+#print(longestPalindrome("abccccdd"))
+

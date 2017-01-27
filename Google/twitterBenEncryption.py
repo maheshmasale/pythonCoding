@@ -3,6 +3,7 @@ def decrypt(encrypted_message):
     baseDecodedStr = "Your friend, Alice"
     baseEncodecodedStr = encrypted_message[encrypted_message.rfind('-')+1:]
     encryptionKey = getEncryptionKey(baseEncodecodedStr, baseDecodedStr,encrypted_message)
+    #encryptionKey = [8, 2, 5, 1, 2, 2, 0]
     print(encryptionKey)
     print(encrypted_message)
     return getDecryptedStr(encryptionKey, encrypted_message)
@@ -75,4 +76,4 @@ def getDecryptedStr(encryptionKey, encrypted_message):
             outputArr.append(encrypted_message[i])
     return ''.join(outputArr)
 
-print(decrypt('elwepuqyez. -Atvt hrqgse, Cnikg'))
+print(decrypt('Bjj rwkcs dwpyp fwz ovors wxjs vje tcez fqg'))
