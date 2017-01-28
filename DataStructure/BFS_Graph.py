@@ -68,12 +68,13 @@ def breadthFirstSearch(g, start,end):
         adjacentsList = t.getAdjacents()
         for i in range(len(adjacentsList)):
             temp = adjacentsList[i]
-            que = que[1:]
+
             if not temp.visited:
                 temp.visited = True
                 if temp == end:
                     return True
                 que.append(temp)
+        que = que[1:]
     return False
 
 def printGraph(g):
@@ -84,7 +85,7 @@ def printGraph(g):
             print(j.getVertex(), end = " ")
         print()
 
-graphhh =  createGraph()
+graphhh = createGraph()
 printGraph(graphhh)
 print(breadthFirstSearch(graphhh, graphhh.getVetices()[4] , graphhh.getVetices()[1]))
 
