@@ -252,8 +252,8 @@ def question3(fileName):
     print("A Star opened", len(aStarArr), "number of nodes.")
     print("DFS visited following cities :", ",".join(dfsArr))
     print("A Star visited following cities :", ",".join(aStarArr))
+    print('End of Question 3','\n')
 
 question1('./roads.pl')
 question2('./roads.pl')
 question3('./roads.pl')
-
