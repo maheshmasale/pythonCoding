@@ -1,5 +1,6 @@
 import re
 from math import *
+
 try:
     import Queue as queue
 except ImportError:
@@ -58,13 +59,14 @@ class city():
         return self.cityName
 
     def getDistance(self,otherCity):
-        #calculate distance to goal City
-        R = 3961
+        R = 6371
+        # return ((self.longitude - otherCity.longitude)**2 + (self.latitude - otherCity.latitude)**2)**0.5
         dlon = (self.longitude - otherCity.longitude) * pi / 180
         dlat = (self.latitude - otherCity.latitude) * pi / 180
-        a = (sin(dlat / 2)) ** 2 + cos(self.latitude) * cos(otherCity.latitude) * ((sin(dlon / 2)) ** 2)
-        c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        a = (sin(dlat / 2)) ** 2 + cos(self.latitude * pi / 180) * cos(otherCity.latitude * pi / 180) * ((sin(dlon / 2)) ** 2)
+        c = 2 * atan2(a**0.5, (1 - a)**0.5)
         return R*c
+
 
 
     #for Ver <3.0
@@ -74,7 +76,7 @@ class city():
     def __lt__(self, other):
         return self.estimatedDistToTrgt < other.estimatedDistToTrgt
 
-class TestGraph():
+class searchGraph():
 
     def createGraph(self,roads, cities):
         g = Graph()
@@ -189,25 +191,69 @@ class TestGraph():
         endCity = self.graph.getCity(end)
 
         HeurDistDict = self.calcHeuristicDist(endCity)
+        setattr(startCity,'distFromSrc',0)
+        #print(HeurDistDict)
 
         path = []
         que = queue.PriorityQueue()
         que.put(startCity)
         while not que.empty():
             currCity = que.get()
-            currCity.visited = True
-            for adjCity in currCity.get
+            #print('Start Of the City----------------------',currCity.getName())
+            path.append(currCity.getName())
+            for adjCityTup in currCity.getAdjacents():
+                tempCity = adjCityTup[0]
+                if tempCity.getName() == end:
+                    return path
+                g = getattr(currCity,'distFromSrc',0)+adjCityTup[1]
+                h = HeurDistDict[tempCity.getName()]
+                if g < getattr(tempCity,'distFromSrc',0):
+                    setattr(tempCity,'distFromSrc',g)
+                    setattr(tempCity,'estimatedDistToTrgt',g+h)
+                    que.put(tempCity)
+                #print('------------', tempCity.getName(), tempCity.distFromSrc,tempCity.estimatedDistToTrgt)
+            #print('End Of the City----------------------')
+        return []
 
-        pass
+def question1(fileName):
+    print('Path is between Urziceni and Mehadia')
+    test1 = searchGraph(fileName)
+    bfsArr = test1.breadthFirstSearch('urziceni','mehadia')
+    test1.graph.resetGraph()
+    dfsArr = test1.depthFirstSearch('urziceni','mehadia')
+    print("BFS opened",len(bfsArr),"number of nodes.")
+    print("DFS opened",len(dfsArr),"number of nodes.")
+    print("BFS visited following cities :",",".join(bfsArr))
+    print("DFS visited following cities :",",".join(dfsArr))
+    print('End of Question 1','\n')
 
+def question2(fileName):
+    print('Path is between Arad and Lugoj')
+    test1 = searchGraph(fileName)
+    bfsArr = test1.breadthFirstSearch('arad', 'lugoj')
+    test1.graph.resetGraph()
+    dfsArr = test1.depthFirstSearch('arad', 'lugoj')
+    print("BFS opened", len(bfsArr), "number of nodes.")
+    print("DFS opened", len(dfsArr), "number of nodes.")
+    print("BFS visited following cities :", ",".join(bfsArr))
+    print("DFS visited following cities :", ",".join(dfsArr))
+    print('End of Question 2','\n')
 
+def question3(fileName):
+    print('Path is between Arad and Neamt')
+    test1 = searchGraph(fileName)
+    #test1.graph.printGraph()
+    dfsArr = test1.depthFirstSearch('arad', 'neamt')
 
-test1 = TestGraph('./roads.pl')
-print("BFS")
-#print(test1.breadthFirstSearch('arad','neamt'))
-print(test1.breadthFirstSearch('urziceni','mehadia'))
+    test1.graph.resetGraph()
+    aStarArr = test1.AStarSearch('arad', 'neamt')
 
-test1.graph.resetGraph()
-print("DFS")
-print(test1.depthFirstSearch('urziceni','mehadia'))
+    print("DFS opened", len(dfsArr), "number of nodes.")
+    print("A Star opened", len(aStarArr), "number of nodes.")
+    print("DFS visited following cities :", ",".join(dfsArr))
+    print("A Star visited following cities :", ",".join(aStarArr))
+
+question1('./roads.pl')
+question2('./roads.pl')
+question3('./roads.pl')
 
