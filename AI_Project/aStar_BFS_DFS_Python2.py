@@ -24,12 +24,12 @@ class Graph():
                 return i
 
     def printGraph(self):
-        print("PRINTING GRAPH:")
+        print "PRINTING GRAPH:"
         for i in self.cityList:
-            print(i.getName(), " --->", end=" ")
+            print i.getName(), " --->  "
             for j in i.getAdjacents():
-                print(j[0].getName(),'(',j[1],')', end=" ")
-            print()
+                print j[0].getName(),'(',j[1],')'
+            print " "
         return "END OF Graph"
 
     def resetGraph(self):
@@ -37,6 +37,7 @@ class Graph():
             i.visited = False
             i.distFromSrc = float('inf')
             i.estimatedDistToTrgt = float('inf')
+            i.prevCityInPath = None
 
 class city():
     def __init__(self, cityName,longitude,lat,distFromSrcParam=float('inf'),estimatedDistToTrgtParam=float('inf')):
@@ -47,6 +48,7 @@ class city():
         self.longitude = longitude
         self.distFromSrc = distFromSrcParam
         self.estimatedDistToTrgt = estimatedDistToTrgtParam
+        self.prevCityInPath = None
 
     def addAdjacents(self, adjacent):
         if adjacent:
@@ -67,7 +69,14 @@ class city():
         c = 2 * atan2(a**0.5, (1 - a)**0.5)
         return R*c
 
-
+    def getExtractedPath(self,otherCity):
+        path = []
+        currCity = self
+        while currCity != None and currCity.getName() != otherCity.getName():
+            path.append(currCity.getName())
+            currCity = currCity.prevCityInPath
+        path.append(otherCity.getName())
+        return path[::-1]
 
     #for Ver <3.0
     def __cmp__(self, other):
@@ -100,7 +109,7 @@ class searchGraph():
         roads = []
         cityLoc = {}
 
-        with open(filename, 'r', encoding='utf-8') as f:
+        with open(filename, 'r') as f:
             outData = f.read()
 
         allRoads = re.findall(r'(?<=road).*,.*,.*[)](?=.)', outData)
@@ -129,7 +138,7 @@ class searchGraph():
 
     def breadthFirstSearch(self, start, end):
         if start == end:
-            return []
+            return [],[]
 
         startCity = self.graph.getCity(start)
         endCity = self.graph.getCity(end)
@@ -142,19 +151,22 @@ class searchGraph():
             t.visited = True
             path.append(t.getName())
             adjacentCities = t.getAdjacents()
-            for i in range(len(adjacentCities)):
+        for i in range(len(adjacentCities)):
                 tempCity = adjacentCities[i][0]
                 if not tempCity.visited:
+                    #For getting the path
+                    tempCity.prevCityInPath = t
+
                     tempCity.visited = True
-                    if tempCity == endCity:
-                        return path
+                    if tempCity.getName() == endCity.getName():
+                        return path,endCity.getExtractedPath(startCity)
                     que.append(tempCity)
             que = que[1:]
-        return []
+        return [],endCity.getExtractedPath(startCity)
 
     def depthFirstSearch(self, start, end):
         if start == end:
-            return []
+            return [],[]
 
         startCity = self.graph.getCity(start)
         endCity = self.graph.getCity(end)
@@ -172,11 +184,15 @@ class searchGraph():
             for i in range(len(adjacentCities)):
                 tCity = adjacentCities[i][0]
                 if not tCity.visited:
+
+                    #For getting the path
+                    tCity.prevCityInPath = tempCity
+
                     tCity.visited = True
-                    if tCity == endCity:
-                        return path
+                    if tCity.getName() == endCity.getName():
+                        return path, tCity.getExtractedPath(startCity)
                     stk.append(tCity)
-        return []
+        return [],endCity.getExtractedPath(startCity)
 
     def calcHeuristicDist(self,targetCity):
         dictHDist = {}
@@ -186,73 +202,89 @@ class searchGraph():
 
     def AStarSearch(self,start,end):
         if start == end:
-            return []
+            return [],[]
         startCity = self.graph.getCity(start)
         endCity = self.graph.getCity(end)
 
         HeurDistDict = self.calcHeuristicDist(endCity)
         setattr(startCity,'distFromSrc',0)
-        #print(HeurDistDict)
+        print "The Heuristic Distance Values are"
+        for k,v in HeurDistDict.items():
+            print k,"=",v
+        print " "
 
         path = []
         que = queue.PriorityQueue()
         que.put(startCity)
         while not que.empty():
             currCity = que.get()
-            #print('Start Of the City----------------------',currCity.getName())
+            #print 'Start Of the City----------------------',currCity.getName()
             path.append(currCity.getName())
             for adjCityTup in currCity.getAdjacents():
                 tempCity = adjCityTup[0]
                 if tempCity.getName() == end:
-                    return path
+                    setattr(tempCity,'prevCityInPath' ,currCity)
+                    return path, endCity.getExtractedPath(startCity)
+
                 g = getattr(currCity,'distFromSrc',0)+adjCityTup[1]
                 h = HeurDistDict[tempCity.getName()]
                 if g < getattr(tempCity,'distFromSrc',0):
                     setattr(tempCity,'distFromSrc',g)
                     setattr(tempCity,'estimatedDistToTrgt',g+h)
+                    setattr(tempCity,'prevCityInPath' ,currCity)
                     que.put(tempCity)
-                #print('------------', tempCity.getName(), tempCity.distFromSrc,tempCity.estimatedDistToTrgt)
-            #print('End Of the City----------------------')
-        return []
+                #print '------------', tempCity.getName(), tempCity.distFromSrc,tempCity.estimatedDistToTrgt
+            #print 'End Of the City----------------------'
+        return [], endCity.getExtractedPath(startCity)
 
 def question1(fileName):
-    print('Path is between Urziceni and Mehadia')
+    print 'Start of Question 1'
+    print 'Path is between Urziceni and Mehadia'
     test1 = searchGraph(fileName)
-    bfsArr = test1.breadthFirstSearch('urziceni','mehadia')
+    test1.graph.printGraph()
+    bfsArr,bfsPath = test1.breadthFirstSearch('urziceni','mehadia')
     test1.graph.resetGraph()
-    dfsArr = test1.depthFirstSearch('urziceni','mehadia')
-    print("BFS opened",len(bfsArr),"number of nodes.")
-    print("DFS opened",len(dfsArr),"number of nodes.")
-    print("BFS visited following cities :",",".join(bfsArr))
-    print("DFS visited following cities :",",".join(dfsArr))
-    print('End of Question 1','\n')
+    dfsArr,dfsPath = test1.depthFirstSearch('urziceni','mehadia')
+    print "BFS opened",len(bfsArr),"number of nodes."
+    print "DFS opened",len(dfsArr),"number of nodes."
+    print "BFS visited following cities :",",".join(bfsArr)
+    print "DFS visited following cities :",",".join(dfsArr)
+    print "BFS Path :"," -> ".join(bfsPath)
+    print "DFS Path :"," -> ".join(dfsPath)
+    print 'End of Question 1','\n'
 
 def question2(fileName):
-    print('Path is between Arad and Lugoj')
+    print 'Start of Question 2'
+    print 'Path is between Arad and Lugoj'
     test1 = searchGraph(fileName)
-    bfsArr = test1.breadthFirstSearch('arad', 'lugoj')
+    bfsArr,bfsPath = test1.breadthFirstSearch('arad', 'lugoj')
     test1.graph.resetGraph()
-    dfsArr = test1.depthFirstSearch('arad', 'lugoj')
-    print("BFS opened", len(bfsArr), "number of nodes.")
-    print("DFS opened", len(dfsArr), "number of nodes.")
-    print("BFS visited following cities :", ",".join(bfsArr))
-    print("DFS visited following cities :", ",".join(dfsArr))
-    print('End of Question 2','\n')
+    dfsArr,dfsPath = test1.depthFirstSearch('arad', 'lugoj')
+    print "BFS opened", len(bfsArr), "number of nodes."
+    print "DFS opened", len(dfsArr), "number of nodes."
+    print "BFS visited following cities :", ",".join(bfsArr)
+    print "DFS visited following cities :", ",".join(dfsArr)
+    print "BFS Path :"," -> ".join(bfsPath)
+    print "DFS Path :"," -> ".join(dfsPath)
+    print 'End of Question 2','\n'
 
 def question3(fileName):
-    print('Path is between Arad and Neamt')
+    print 'Start of Question 3'
+    print 'Path is between Arad and Neamt'
     test1 = searchGraph(fileName)
     #test1.graph.printGraph()
-    dfsArr = test1.depthFirstSearch('arad', 'neamt')
+    dfsArr,dfsPath = test1.depthFirstSearch('arad', 'neamt')
 
     test1.graph.resetGraph()
-    aStarArr = test1.AStarSearch('arad', 'neamt')
+    aStarArr,aStarPath = test1.AStarSearch('arad', 'neamt')
 
-    print("DFS opened", len(dfsArr), "number of nodes.")
-    print("A Star opened", len(aStarArr), "number of nodes.")
-    print("DFS visited following cities :", ",".join(dfsArr))
-    print("A Star visited following cities :", ",".join(aStarArr))
-    print('End of Question 3','\n')
+    print "DFS opened", len(dfsArr), "number of nodes."
+    print "A Star opened", len(aStarArr), "number of nodes."
+    print "DFS visited following cities :", ",".join(dfsArr)
+    print "A Star visited following cities :", ",".join(aStarArr)
+    print "DFS Path :"," -> ".join(dfsPath)
+    print "A* Path :"," -> ".join(aStarPath)
+    print 'End of Question 3','\n'
 
 question1('./roads.pl')
 question2('./roads.pl')
