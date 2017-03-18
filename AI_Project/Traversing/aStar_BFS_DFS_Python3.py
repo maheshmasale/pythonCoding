@@ -238,9 +238,12 @@ class searchGraph():
         return [], endCity.getExtractedPath(startCity)
 
 def question1(fileName):
+    test1 = searchGraph(fileName)
+    test1.graph.printGraph()
+    print(" ")
+    
     print('Start of Question 1')
     print('Path is between Urziceni and Mehadia')
-    test1 = searchGraph(fileName)
     bfsArr,bfsPath = test1.breadthFirstSearch('urziceni','mehadia')
     test1.graph.resetGraph()
     dfsArr,dfsPath = test1.depthFirstSearch('urziceni','mehadia')

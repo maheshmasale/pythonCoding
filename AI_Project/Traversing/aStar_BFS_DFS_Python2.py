@@ -72,7 +72,7 @@ class city():
     def getExtractedPath(self,otherCity):
         path = []
         currCity = self
-        while currCity != None and currCity.getName() != otherCity.getName():
+        while(currCity != None and currCity.getName() != otherCity.getName()):
             path.append(currCity.getName())
             currCity = currCity.prevCityInPath
         path.append(otherCity.getName())
@@ -80,6 +80,10 @@ class city():
 
     #for Ver <3.0
     def __cmp__(self, other):
+        if not self:
+            return False
+        if not other:
+            return True
         return self.estimatedDistToTrgt < other.estimatedDistToTrgt
     #for Ver >3.0
     def __lt__(self, other):
@@ -151,7 +155,7 @@ class searchGraph():
             t.visited = True
             path.append(t.getName())
             adjacentCities = t.getAdjacents()
-        for i in range(len(adjacentCities)):
+            for i in range(len(adjacentCities)):
                 tempCity = adjacentCities[i][0]
                 if not tempCity.visited:
                     #For getting the path
@@ -238,10 +242,11 @@ class searchGraph():
         return [], endCity.getExtractedPath(startCity)
 
 def question1(fileName):
-    print 'Start of Question 1'
-    print 'Path is between Urziceni and Mehadia'
     test1 = searchGraph(fileName)
     test1.graph.printGraph()
+    print ' '
+    print 'Start of Question 1'
+    print 'Path is between Urziceni and Mehadia'
     bfsArr,bfsPath = test1.breadthFirstSearch('urziceni','mehadia')
     test1.graph.resetGraph()
     dfsArr,dfsPath = test1.depthFirstSearch('urziceni','mehadia')
