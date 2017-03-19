@@ -1,0 +1,2 @@
+at monkey posb low S
+holds [banana2] S
